@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="EN">
+<head>
+    <title>pixi.js example 13 - Graphics</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <!--suppress SpellCheckingInspection -->
+<!--    <script src="res/http_www.goodboydigital.com_pixijs_examples_14_pixi.js"></script>-->
+    <script src="http://www.goodboydigital.com/pixijs/examples/20/pixi.js"></script>
+</head>
+
+<body>
+<!--suppress JSUnusedGlobalSymbols -->
+<script>
+    const stage = new PIXI.Stage(0x4F8FFF, true);
+    stage.setInteractive(true);
+    const _h = 512;
+    const _v = 512;
+    const renderer = PIXI.autoDetectRenderer(_h, _v);
+    // renderer.view.style.display = "block";
+    document.body.appendChild(renderer.view);
+
+    const texture = PIXI.Texture.fromImage("HelloWorld.png");
+    const sprite = new PIXI.Sprite(texture);
+    stage.addChild(sprite);
+
+    sprite.position.x = _h / 2 - 100;
+    sprite.position.y = _v / 2 - 150;
+    sprite.visible = true;
+
+    let text = new PIXI.Text('This is a PixiJS text'
+        ,{fontFamily : 'Arial', fontSize: 24, fill : 0xff1010, align : 'center', x: 20, y: 20}
+    );
+    // const bitmapFontText = PIXI.Text(
+    //     'bitmap fonts are supported!\nWoo yay!'
+        // , {
+        //     fontName: 'Desyrel',
+        //     fontSize: 55,
+        //     align: 'left',
+        // },
+    // );
+    // text.x = 50;
+    // text.y = 200;
+    stage.addChild(text);
+
+    function addGraphics() {
+        const graphics = new PIXI.Graphics();
+
+        // set a fill and line style
+        graphics.beginFill(0xFF3300);
+        graphics.lineStyle(10, 0xffd900, 1);
+
+        // draw a shape
+        graphics.moveTo(50, 50);
+        graphics.lineTo(250, 50);
+        graphics.lineTo(100, 100);
+        graphics.lineTo(250, 220);
+        graphics.lineTo(50, 220);
+        graphics.lineTo(50, 50);
+        graphics.endFill();
+
+        // set a fill and line style again
+        graphics.lineStyle(10, 0xFF0000, 0.8);
+        graphics.beginFill(0xFF700B, 1);
+
+        // draw a second shape
+        graphics.moveTo(210, 300);
+        graphics.lineTo(450, 320);
+        graphics.lineTo(570, 350);
+        graphics.lineTo(580, 20);
+        graphics.lineTo(330, 120);
+        graphics.lineTo(410, 200);
+        graphics.lineTo(210, 300);
+        graphics.endFill();
+
+        // draw a rectangle
+        graphics.lineStyle(2, 0x0000FF, 1);
+        graphics.drawRect(50, 250, 100, 100);
+
+        // draw a circle
+        graphics.lineStyle(0);
+        graphics.beginFill(0xFFFF0B, 0.5);
+        graphics.drawCircle(470, 200, 100);
+
+        graphics.lineStyle(20, 0x33FF00);
+        graphics.moveTo(30, 30);
+        graphics.lineTo(600, 300);
+
+        stage.addChild(graphics);
+
+        stage.click = stage.tap = function () {
+            graphics.lineStyle(Math.random() * 30, Math.random() * 0xFFFFFF, 1);
+            graphics.moveTo(Math.random() * 620, Math.random() * 380);
+            graphics.lineTo(Math.random() * 620, Math.random() * 380);
+        }
+    }
+
+    // let`s create moving shape
+    const thing = new PIXI.Graphics();
+    stage.addChild(thing);
+    thing.position.x = _h / 2;
+    thing.position.y = _v / 2;
+
+    let count = 0;
+    requestAnimFrame(animate);
+
+    function thingAnim() {
+        thing.clear();
+        thing.clear();
+        thing.lineStyle(10, 0xff0000, 1);
+        thing.beginFill(0xffFF00, 0.5);
+        const x1 = 100;
+        const y1 = 100;
+        thing.moveTo(-120 + Math.sin(count) * x1, -100 + Math.cos(count) * y1);
+        thing.lineTo(120 + Math.cos(count) * x1, -100 + Math.sin(count) * y1);
+        thing.lineTo(120 + Math.sin(count) * x1, 100 + Math.cos(count) * y1);
+        thing.lineTo(-120 + Math.cos(count) * x1, 100 + Math.sin(count) * y1);
+        thing.lineTo(-120 + Math.sin(count) * x1, -100 + Math.cos(count) * y1);
+        thing.rotation = count * 0.1;
+    }
+
+    function animate() {
+        count += 0.1;
+        thingAnim();
+        renderer.render(stage);
+        requestAnimFrame(animate);
+    }
+
+</script>
+Hello!
+</body>
+</html>
+
