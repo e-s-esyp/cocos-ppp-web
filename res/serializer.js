@@ -32,6 +32,7 @@ const ActionManager = class {
                     } else {
                         a.node.rotation = 3.1415927 * a.ax / 180;
                     }
+                    break;
                 default:
             }
         });
@@ -46,7 +47,19 @@ const Serializer = class {
         this.action_manager = new ActionManager();
     }
 
-    async load(filename) {
+    async load_data(data) {
+        // noinspection JSCheckFunctionSignatures
+        this.base = new Uint8Array(data);
+        console.log(this.base);
+        this.base_ = new DataView(this.base.buffer);
+        console.log(this.base_);
+        this.i = 0;
+        this.clearScene();
+        this.m_in = new Array(1024);
+        this.loadScene();
+    }
+
+    async load_file(filename) {
         console.log("[load] filename: " + filename + "  isSecureContext: " + window.isSecureContext);
         let blob = await fetch(filename).then(r => r.blob());
         let reader = new FileReader();
@@ -56,11 +69,14 @@ const Serializer = class {
             console.log("[load] onload:");
             console.log(this);
             console.log(reader.result);
+            // noinspection JSCheckFunctionSignatures
             loader.base = new Uint8Array(reader.result);
             console.log(loader.base);
             loader.base_ = new DataView(loader.base.buffer);
             console.log(loader.base_);
             loader.i = 0;
+            loader.clearScene();
+            loader.m_in = new Array(1024);
             buffer.loadScene();
         };
         reader.onerror = function () {
@@ -69,11 +85,6 @@ const Serializer = class {
         reader.onloadend = function () {
             console.log("[load] onloadend");
         }
-        this.m_in = new Array(1024);
-    }
-
-    get_int64() {
-        return this.base_.getBigInt64(this.i, true);
     }
 
     read_int64() {
@@ -99,14 +110,14 @@ const Serializer = class {
     }
 
     read_bool() {
-        let r = this.base_.getInt8(this.i, true);
+        let r = this.base_.getInt8(this.i);
         this.i += 1;
         return r;
     }
 
     read_string() {
         let size = this.read_int();
-        var enc = new TextDecoder("utf-8");
+        let enc = new TextDecoder("utf-8");
         let r = enc.decode(this.base.subarray(this.i, this.i + size - 1));
         console.log(r);
         this.i += size;
@@ -201,10 +212,10 @@ const Serializer = class {
     deserialize_scene() {
         console.log("[D] deserialize_scene");
         this.deserialize_node();
-        let size = this.read_int64();
+        this.read_int64();
         let _defaultCamera = this.readNode("defaultCamera");
         let _cameraOrderDirty = this.read_bool();
-        size = this.read_int64();
+        this.read_int64();
         let _physics3dDebugCamera = this.readNode("physics3dDebugCamera");
         let _navMeshDebugCamera = this.readNode("navMeshDebugCamera");
         return "scene";
@@ -233,7 +244,7 @@ const Serializer = class {
         let size = this.read_float();
         let text = new PIXI.Text(mes, {fontFamily: font, fontSize: size, fill: 0xffffff, align: 'center'});
         text.position.x = node.x;
-        text.position.y = node.y;
+        text.position.y = _h - node.y;
         text.anchor.x = 0.5;
         text.anchor.y = 0.5;
         stage.addChild(text);
@@ -286,5 +297,9 @@ const Serializer = class {
         this.readNode("main_scene");
         this.readActionManager();
         console.log(this.m_in);
+    }
+
+    clearScene() {
+        // stage.click();
     }
 }
