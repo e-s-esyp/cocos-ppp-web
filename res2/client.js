@@ -7,8 +7,8 @@ function ask(label) {
     socket.onmessage = (event) => {
         console.log("[socket] onmessage");
         console.log("time: " + event.data);
-        socket.close();
         label.text = event.data;
+        socket.close();
     };
     socket.onopen = () => {
         console.log("[socket] onopen");
@@ -30,8 +30,8 @@ function askScene(buffer) {
         console.log("[socket] onmessage");
         console.log("[socket] scene data:");
         console.log(event.data);
-        socket.close();
         buffer.load_data(event.data);
+        socket.close();
     };
     socket.onopen = () => {
         console.log("[socket] onopen");

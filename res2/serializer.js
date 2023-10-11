@@ -54,6 +54,8 @@ const Serializer = class {
         this.base_ = new DataView(this.base.buffer);
         console.log(this.base_);
         this.i = 0;
+        // this.clearScene();
+        stage.children = [];
         this.m_in = new Array(1024);
         this.loadScene();
     }
@@ -226,10 +228,10 @@ const Serializer = class {
     deserialize_sprite() {
         let node = this.deserialize_node();
         let name = this.read_string();
-        let sprite = PIXI.Sprite.from("res/" + name);
+        let sprite = PIXI.Sprite.from(name);
         stage.addChild(sprite);
         sprite.position.x = node.x;
-        sprite.position.y = _h - node.y;
+        sprite.position.y = node.y;
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
         return sprite;
@@ -292,25 +294,13 @@ const Serializer = class {
     }
 
     loadScene() {
-        // stage.children = [];
-        document.body.removeChild(app.view);
-        _w = this.read_float();
-        _h = this.read_float();
-        app = new PIXI.Application({width: _w, height: _h});
-        app.renderer.background.color = 0;
-        document.body.appendChild(app.view);
-        stage = app.stage;
-
-        let time = new PIXI.Text("---", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-        time.position.x = _h / 2;
-        time.position.y = _w / 16;
-        time.anchor.x = 0.5;
-        time.anchor.y = 0.5;
-        stage.addChild(time);
-        ask(time);
-
         this.readNode("main_scene");
         this.readActionManager();
         console.log(this.m_in);
+    }
+
+    clearScene() {
+        // stage.children = [];
+        // stage.children.forEach((c) => { });
     }
 }

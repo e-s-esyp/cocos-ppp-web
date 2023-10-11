@@ -10,8 +10,8 @@
 </head>
 <body>
 <script>
-    const _h = 512;
-    const _w = 512;
+    let _h = 512;
+    let _w = 512;
     // Create the application helper and add its render target to the page
     let app = new PIXI.Application({width: _w, height: _h});
     // app.renderer.background.color = 0x4F8FFF;
@@ -22,22 +22,14 @@
     const buffer = new Serializer();
     buffer.load_file("buffer.bin");
 
-    let time = new PIXI.Text("---", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-    time.position.x = _h / 2;
-    time.position.y = _w / 16;
-    time.anchor.x = 0.5;
-    time.anchor.y = 0.5;
-    stage.addChild(time);
-    ask(time);
-
     let elapsed = 0.0;
     app.ticker.add((delta) => {
         elapsed += delta;
         buffer.action_manager.update(elapsed);
     });
-
 </script>
 <p></p>
 <button onclick="askScene(buffer)">Get Scene</button>
+<p></p>
 </body>
 </html>
