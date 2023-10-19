@@ -1,0 +1,69 @@
+
+skeleton.png
+size: 256,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bottle_side
+  rotate: false
+  xy: 2, 2
+  size: 22, 57
+  orig: 22, 57
+  offset: 0, 0
+  index: -1
+button_off
+  rotate: false
+  xy: 26, 3
+  size: 21, 23
+  orig: 21, 23
+  offset: 0, 0
+  index: -1
+button_on
+  rotate: false
+  xy: 59, 36
+  size: 21, 23
+  orig: 21, 23
+  offset: 0, 0
+  index: -1
+light_1
+  rotate: false
+  xy: 215, 95
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
+light_2
+  rotate: false
+  xy: 26, 28
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
+light_3
+  rotate: false
+  xy: 215, 62
+  size: 31, 31
+  orig: 31, 31
+  offset: 0, 0
+  index: -1
+smog_1
+  rotate: false
+  xy: 2, 61
+  size: 69, 65
+  orig: 69, 65
+  offset: 0, 0
+  index: -1
+smog_2
+  rotate: false
+  xy: 73, 61
+  size: 69, 65
+  orig: 69, 65
+  offset: 0, 0
+  index: -1
+smog_3
+  rotate: false
+  xy: 144, 61
+  size: 69, 65
+  orig: 69, 65
+  offset: 0, 0
+  index: -1

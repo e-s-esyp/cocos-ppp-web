@@ -1,0 +1,97 @@
+
+skeleton.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+light_dot
+  rotate: false
+  xy: 740, 221
+  size: 23, 23
+  orig: 23, 23
+  offset: 0, 0
+  index: -1
+rose1
+  rotate: false
+  xy: 2, 124
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose2
+  rotate: false
+  xy: 2, 2
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose3
+  rotate: false
+  xy: 125, 124
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose4
+  rotate: false
+  xy: 125, 2
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose5
+  rotate: false
+  xy: 248, 124
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose6
+  rotate: false
+  xy: 248, 2
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose7
+  rotate: false
+  xy: 371, 124
+  size: 121, 120
+  orig: 121, 120
+  offset: 0, 0
+  index: -1
+rose_light1
+  rotate: false
+  xy: 371, 22
+  size: 121, 100
+  orig: 121, 100
+  offset: 0, 0
+  index: -1
+rose_light2
+  rotate: false
+  xy: 494, 144
+  size: 121, 100
+  orig: 121, 100
+  offset: 0, 0
+  index: -1
+rose_light3
+  rotate: false
+  xy: 494, 42
+  size: 121, 100
+  orig: 121, 100
+  offset: 0, 0
+  index: -1
+rose_light4
+  rotate: false
+  xy: 617, 144
+  size: 121, 100
+  orig: 121, 100
+  offset: 0, 0
+  index: -1
+rose_light5
+  rotate: false
+  xy: 617, 42
+  size: 121, 100
+  orig: 121, 100
+  offset: 0, 0
+  index: -1

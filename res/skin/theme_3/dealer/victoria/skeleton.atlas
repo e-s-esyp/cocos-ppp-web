@@ -1,0 +1,202 @@
+
+skeleton.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+victoria__hair_back
+  rotate: false
+  xy: 375, 57
+  size: 71, 69
+  orig: 71, 69
+  offset: 0, 0
+  index: -1
+victoria_arm
+  rotate: true
+  xy: 189, 68
+  size: 58, 91
+  orig: 58, 91
+  offset: 0, 0
+  index: -1
+victoria_arml
+  rotate: true
+  xy: 282, 68
+  size: 58, 91
+  orig: 58, 91
+  offset: 0, 0
+  index: -1
+victoria_blink_one
+  rotate: false
+  xy: 448, 57
+  size: 34, 7
+  orig: 34, 7
+  offset: 0, 0
+  index: -1
+victoria_blink_three
+  rotate: false
+  xy: 783, 116
+  size: 34, 10
+  orig: 34, 10
+  offset: 0, 0
+  index: -1
+victoria_blink_two
+  rotate: false
+  xy: 36, 14
+  size: 34, 10
+  orig: 34, 10
+  offset: 0, 0
+  index: -1
+victoria_body
+  rotate: false
+  xy: 2, 26
+  size: 88, 100
+  orig: 88, 100
+  offset: 0, 0
+  index: -1
+victoria_hair
+  rotate: false
+  xy: 498, 86
+  size: 57, 40
+  orig: 57, 40
+  offset: 0, 0
+  index: -1
+victoria_hair_bangs
+  rotate: false
+  xy: 92, 26
+  size: 57, 40
+  orig: 57, 40
+  offset: 0, 0
+  index: -1
+victoria_hand_five
+  rotate: true
+  xy: 151, 23
+  size: 43, 48
+  orig: 43, 48
+  offset: 0, 0
+  index: -1
+victoria_hand_fivel
+  rotate: true
+  xy: 201, 24
+  size: 42, 48
+  orig: 42, 48
+  offset: 0, 0
+  index: -1
+victoria_hand_four
+  rotate: false
+  xy: 748, 99
+  size: 33, 27
+  orig: 33, 27
+  offset: 0, 0
+  index: -1
+victoria_hand_one
+  rotate: false
+  xy: 293, 38
+  size: 47, 28
+  orig: 47, 28
+  offset: 0, 0
+  index: -1
+victoria_hand_one_l
+  rotate: false
+  xy: 650, 98
+  size: 47, 28
+  orig: 47, 28
+  offset: 0, 0
+  index: -1
+victoria_hand_six
+  rotate: false
+  xy: 557, 88
+  size: 40, 38
+  orig: 40, 38
+  offset: 0, 0
+  index: -1
+victoria_hand_six_l
+  rotate: false
+  xy: 251, 28
+  size: 40, 38
+  orig: 40, 38
+  offset: 0, 0
+  index: -1
+victoria_hand_three
+  rotate: true
+  xy: 699, 103
+  size: 23, 47
+  orig: 23, 47
+  offset: 0, 0
+  index: -1
+victoria_hand_two
+  rotate: true
+  xy: 599, 98
+  size: 28, 49
+  orig: 28, 49
+  offset: 0, 0
+  index: -1
+victoria_head
+  rotate: false
+  xy: 448, 66
+  size: 48, 60
+  orig: 48, 60
+  offset: 0, 0
+  index: -1
+victoria_heart
+  rotate: false
+  xy: 251, 2
+  size: 29, 24
+  orig: 29, 24
+  offset: 0, 0
+  index: -1
+victoria_kiss
+  rotate: false
+  xy: 92, 68
+  size: 95, 58
+  orig: 95, 58
+  offset: 0, 0
+  index: -1
+victoria_mouth_one
+  rotate: true
+  xy: 282, 2
+  size: 24, 16
+  orig: 24, 16
+  offset: 0, 0
+  index: -1
+victoria_mouth_three
+  rotate: false
+  xy: 342, 40
+  size: 30, 26
+  orig: 30, 26
+  offset: 0, 0
+  index: -1
+victoria_mouth_two
+  rotate: true
+  xy: 300, 2
+  size: 24, 16
+  orig: 24, 16
+  offset: 0, 0
+  index: -1
+victoria_smile_wink_one
+  rotate: false
+  xy: 293, 28
+  size: 34, 8
+  orig: 34, 8
+  offset: 0, 0
+  index: -1
+victoria_smile_wink_two
+  rotate: false
+  xy: 498, 67
+  size: 33, 17
+  orig: 33, 17
+  offset: 0, 0
+  index: -1
+victoria_wink_one
+  rotate: false
+  xy: 533, 75
+  size: 16, 9
+  orig: 16, 9
+  offset: 0, 0
+  index: -1
+victoria_wink_two
+  rotate: false
+  xy: 2, 10
+  size: 32, 14
+  orig: 32, 14
+  offset: 0, 0
+  index: -1

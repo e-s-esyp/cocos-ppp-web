@@ -1,0 +1,220 @@
+{
+"skeleton": { "hash": "n82odGdqeuSRVcW7OQUEn8vRRPQ", "spine": "3.6.52", "width": 71.41, "height": 238.49, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bottle", "parent": "root", "y": -90.88 },
+	{ "name": "light", "parent": "root", "x": 39.58, "y": -48.78 },
+	{ "name": "light2", "parent": "root", "x": 39.58, "y": -48.78 },
+	{ "name": "light3", "parent": "root", "x": 39.58, "y": -48.78 },
+	{ "name": "light4", "parent": "root", "x": 39.58, "y": -48.78 },
+	{ "name": "light5", "parent": "root", "x": 39.58, "y": -48.78 },
+	{ "name": "smog", "parent": "root", "x": 43.5, "y": 103.71 }
+],
+"slots": [
+	{ "name": "button_on", "bone": "bottle", "attachment": "button_off" },
+	{ "name": "light_3", "bone": "light", "attachment": "light_1" },
+	{ "name": "light_4", "bone": "light2", "attachment": "light_1" },
+	{ "name": "light_5", "bone": "light3", "attachment": "light_1" },
+	{ "name": "light_6", "bone": "light4", "attachment": "light_1" },
+	{ "name": "light_7", "bone": "light5", "attachment": "light_1" },
+	{ "name": "bottle_side", "bone": "bottle", "attachment": "bottle_side" },
+	{ "name": "smog_1", "bone": "smog", "attachment": "smog_3" }
+],
+"skins": {
+	"default": {
+		"bottle_side": {
+			"bottle_side": { "x": -0.03, "y": 10.29, "width": 22, "height": 57 }
+		},
+		"button_on": {
+			"button_off": { "y": 50.49, "width": 21, "height": 23 },
+			"button_on": { "y": 50.49, "width": 21, "height": 23 }
+		},
+		"light_3": {
+			"light_1": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_2": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_3": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 }
+		},
+		"light_4": {
+			"light_1": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_2": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_3": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 }
+		},
+		"light_5": {
+			"light_1": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_2": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_3": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 }
+		},
+		"light_6": {
+			"light_1": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_2": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_3": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 }
+		},
+		"light_7": {
+			"light_1": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_2": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 },
+			"light_3": { "x": -0.33, "y": -0.89, "width": 31, "height": 31 }
+		},
+		"smog_1": {
+			"smog_1": { "x": -25.66, "y": -6.81, "width": 69, "height": 65 },
+			"smog_2": { "x": -25.66, "y": -6.81, "width": 69, "height": 65 },
+			"smog_3": { "x": -25.66, "y": -6.81, "width": 69, "height": 65 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"bottle_side": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 2, "color": "ffffffff" },
+					{ "time": 2.3333, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "bottle_side" },
+					{ "time": 0.1667, "name": "bottle_side" }
+				]
+			},
+			"button_on": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 2, "color": "ffffffff" },
+					{ "time": 2.3333, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "button_on" },
+					{ "time": 0.5, "name": "button_on" },
+					{ "time": 0.6667, "name": "button_off" },
+					{ "time": 0.8333, "name": "button_on" },
+					{ "time": 1, "name": "button_off" },
+					{ "time": 1.1667, "name": "button_on" }
+				]
+			},
+			"light_3": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 1.1667, "name": "light_1" },
+					{ "time": 1.2333, "name": "light_2" },
+					{ "time": 1.3, "name": "light_3" },
+					{ "time": 1.3667, "name": null },
+					{ "time": 1.6333, "name": "light_1" },
+					{ "time": 1.7, "name": "light_2" },
+					{ "time": 1.7667, "name": "light_3" },
+					{ "time": 1.8333, "name": null }
+				]
+			},
+			"light_4": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 1.2333, "name": "light_1" },
+					{ "time": 1.3, "name": "light_2" },
+					{ "time": 1.3667, "name": "light_3" },
+					{ "time": 1.4333, "name": null },
+					{ "time": 1.7, "name": "light_1" },
+					{ "time": 1.7667, "name": "light_2" },
+					{ "time": 1.8333, "name": "light_3" },
+					{ "time": 1.9, "name": null }
+				]
+			},
+			"light_5": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 1.3333, "name": "light_1" },
+					{ "time": 1.4, "name": "light_2" },
+					{ "time": 1.4667, "name": "light_3" },
+					{ "time": 1.5333, "name": null },
+					{ "time": 1.8, "name": "light_1" },
+					{ "time": 1.8667, "name": "light_2" },
+					{ "time": 1.9333, "name": "light_3" },
+					{ "time": 2, "name": null }
+				]
+			},
+			"light_6": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 1.4, "name": "light_1" },
+					{ "time": 1.4667, "name": "light_2" },
+					{ "time": 1.5333, "name": "light_3" },
+					{ "time": 1.6, "name": null },
+					{ "time": 1.8667, "name": "light_1" },
+					{ "time": 1.9333, "name": "light_2" },
+					{ "time": 2, "name": "light_3" },
+					{ "time": 2.0667, "name": null }
+				]
+			},
+			"light_7": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 1.5, "name": "light_1" },
+					{ "time": 1.5667, "name": "light_2" },
+					{ "time": 1.6333, "name": "light_3" },
+					{ "time": 1.7, "name": null },
+					{ "time": 1.9667, "name": "light_1" },
+					{ "time": 2.0333, "name": "light_2" },
+					{ "time": 2.1, "name": "light_3" },
+					{ "time": 2.1667, "name": null }
+				]
+			},
+			"smog_1": {
+				"attachment": [
+					{ "time": 0, "name": null },
+					{ "time": 0.6667, "name": "smog_1" },
+					{ "time": 0.7333, "name": "smog_2" },
+					{ "time": 0.8, "name": "smog_3" },
+					{ "time": 0.8667, "name": null },
+					{ "time": 1, "name": "smog_1" },
+					{ "time": 1.0667, "name": "smog_2" },
+					{ "time": 1.1333, "name": "smog_3" },
+					{ "time": 1.2, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"bottle": {
+				"rotate": [
+					{ "time": 0.1667, "angle": 0 },
+					{ "time": 0.5, "angle": 20 }
+				],
+				"translate": [
+					{ "time": 0, "x": 0, "y": 50.53, "curve": "stepped" },
+					{ "time": 0.1667, "x": 0, "y": 50.53 },
+					{ "time": 0.5, "x": 75.04, "y": 168.83 }
+				]
+			},
+			"light": {
+				"translate": [
+					{ "time": 1.1667, "x": -10.14, "y": 139.61 }
+				]
+			},
+			"smog": {
+				"translate": [
+					{ "time": 0.6667, "x": -4.06, "y": 10.82, "curve": "stepped" },
+					{ "time": 1, "x": -4.06, "y": 10.82 }
+				]
+			},
+			"light2": {
+				"translate": [
+					{ "time": 1.2333, "x": -72.75, "y": 179.31 }
+				]
+			},
+			"light3": {
+				"translate": [
+					{ "time": 1.3333, "x": -15.74, "y": 185.93 }
+				]
+			},
+			"light4": {
+				"translate": [
+					{ "time": 1.4, "x": -61.55, "y": 147.75 }
+				]
+			},
+			"light5": {
+				"translate": [
+					{ "time": 1.5, "x": -81.91, "y": 132.48 }
+				]
+			}
+		}
+	}
+}
+}
