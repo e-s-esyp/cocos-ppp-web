@@ -21,6 +21,7 @@ function ask(label) {
 }
 
 function askScene(buffer) {
+    _read_visible = true;
     console.log("[socket] askScene");
     const socket = new WebSocket("ws://127.0.0.1:5000/");
     console.log("[socket] new WebSocket");

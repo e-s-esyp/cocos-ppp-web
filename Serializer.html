@@ -7,6 +7,7 @@
     <script src="client.js"></script>
     <script src="pixi.min.js"></script>
     <script src="serializer.js"></script>
+    <script src="debug.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
@@ -113,54 +114,6 @@
     </style>
 </head>
 <body>
-<script>
-    /* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-    let _scale = 0.5;
-
-    function setScale() {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
-
-    function set_scale(scale) {
-        _scale = scale;
-        document.body.removeChild(app.view);
-        let newapp = new PIXI.Application({width: _w * _scale, height: _h * _scale});
-        app.stage.scale.set(_scale, _scale);
-        newapp.stage = app.stage;
-        app = newapp;
-        document.body.appendChild(app.view);
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.dropbtn')) {
-            var myDropdown = document.getElementById("myDropdown");
-            if (myDropdown.classList.contains('show')) {
-                myDropdown.classList.remove('show');
-            }
-        }
-    }
-
-    let stage;
-    let _h = 512;
-    let _w = 512;
-    let app = new PIXI.Application({width: _w, height: _h});
-    // app.renderer.background.color = 0x4F8FFF;
-    // app.renderer.background.color = 0;
-    document.body.appendChild(app.view);
-
-
-    console.log("loading");
-    const buffer = new Serializer();
-    buffer.load_file("buffer.bin");
-
-    let elapsed = 0.0;
-    app.ticker.add((delta) => {
-        elapsed += delta;
-        buffer.action_manager.update(elapsed);
-    });
-</script>
 
 <div class="navbar">
     <ul>
@@ -188,9 +141,82 @@ toggle between hiding and showing the dropdown content */
                 </div>
             </div>
         </li>
+        <li>
+            <div class="btn">
+                <button class="btn" onclick="print_info(stage)">Scene Info</button>
+            </div>
+        </li>
+
     </ul>
 </div>
+<ul>
+    <li class="graphics">
 
+    </li>
+    <li class="graphics">
+        ---
+    </li>
+    <li>
+        <textarea id="debugview" name="debugview" rows="40" cols="100">Screen info.
+        </textarea>
+    </li>
+</ul>
+
+<script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    let _scale = 0.5;
+    let _place = document.body.children[1].children[0];
+    function setScale() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    function set_scale(scale) {
+        _scale = scale;
+        // document.body.removeChild(app.view);
+        _place.removeChild(app.view);
+        let newapp = new PIXI.Application({width: _w * _scale, height: _h * _scale});
+        app.stage.scale.set(_scale, _scale);
+        newapp.stage = app.stage;
+        app = newapp;
+        // document.body.appendChild(app.view);
+        _place.appendChild(app.view);
+        print_info(stage);
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.dropbtn')) {
+            var myDropdown = document.getElementById("myDropdown");
+            if (myDropdown.classList.contains('show')) {
+                myDropdown.classList.remove('show');
+            }
+        }
+    }
+
+    let stage;
+    let _h = 512;
+    let _w = 512;
+    let app = new PIXI.Application({width: _w, height: _h});
+    // app.renderer.background.color = 0x4F8FFF;
+    // app.renderer.background.color = 0;
+    // document.body.appendChild(app.view);
+    _place.appendChild(app.view);
+
+    console.log("loading");
+    const buffer = new Serializer();
+    let _read_visible = false;
+    buffer.load_file("buffer.bin");
+
+    let elapsed = 0.0;
+    app.ticker.add((delta) => {
+        elapsed += delta;
+        buffer.action_manager.update(elapsed);
+    });
+
+    console.log(document.body);
+    // document.body.getElementsByClassName("graphics")[0].innerHTML = "Milk";
+</script>
 
 <p></p>
 </body>
