@@ -240,11 +240,11 @@ const Serializer = class {
         node._hashOfName = this.read_int64();
         if (_read_visible) {
             node.visible = this.read_bool();
+            node.position.x = 0;
+            node.position.y = 0;
         }
         // node.position.x = node._position_x;
         // node.position.y = _h - node._position_y;
-        // node.position.x = 0;
-        // node.position.y = 0;
         node.width = 512;
         node.height = 512;
         console.log("NEW Container x: " + node.position.x + "  y: " + node.position.y);
@@ -269,8 +269,10 @@ const Serializer = class {
             parent.addChild(node);
         }
         console.log("[D] deserialize_ProtectedNode");
-        node.position.x = -200+this.read_float();
-        node.position.y = 20+_h-this.read_float();
+        node.position.x = -200 + this.read_float();
+        node.position.y = 20 + _h - this.read_float();
+        node.position.x = 0;
+        node.position.y = 0;
         //-<<< children >>>-
         let size = this.read_int();
         console.log("[D] children_size: " + size);// + "(" + size.toString(16) + ")");
@@ -313,8 +315,13 @@ const Serializer = class {
         let sprite = PIXI.Sprite.from("res/" + name);
         this.m_in[n] = sprite;
         sprite.visible = node.visible;
-        sprite.position.x = node.position.x;
-        sprite.position.y = node.position.y;
+        if (_read_visible) {
+            sprite.position.x = this.read_float();
+            sprite.position.y = _h - this.read_float();
+        } else {
+            sprite.position.x = node.position.x;
+            sprite.position.y = node.position.y;
+        }
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
         sprite._name = "deserialized sprite";
@@ -323,6 +330,7 @@ const Serializer = class {
         sprite.children = tmp.children;
         // sprite.scale.set(_scale, _scale);
         // this.check(sprite, name);
+        sprite.alpha = 0.5;
         return sprite;
     }
 
@@ -332,13 +340,18 @@ const Serializer = class {
         tmp._name = "tmp parent";
         let node = this.deserialize_node(tmp, 12357);
         let mes = this.read_string();
-        let font = this.read_string();
-        let size = this.read_float();
-        let text = new PIXI.Text(mes, {fontFamily: font, fontSize: size, fill: 0xffffff, align: 'center'});
+        let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center'});
         this.m_in[n] = text;
+        text.font = this.read_string();
+        text.size = this.read_float();
+        if (_read_visible) {
+            text.position.x = this.read_float();
+            text.position.y = _h - this.read_float();
+        } else {
+            text.position.x = node.position.x;
+            text.position.y = node.position.y;
+        }
         text.visible = node.visible;
-        text.position.x = node.position.x;
-        text.position.y = node.position.y;
         text.anchor.x = 0.5;
         text.anchor.y = 0.5;
         console.log("[Label] x:" + text.position.x + " y:" + text.position.y + " " + mes);
