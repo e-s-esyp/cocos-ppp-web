@@ -238,7 +238,7 @@ const Serializer = class {
         console.log("[D] children_size: " + size);//+ "(" + size.toString(16) + ")");
         for (let i = 0; i < size; ++i) {
             node._name = parent._name + "_node" + i;
-            this.readNode(node._name, parent);
+            this.readNode(node._name, node);
         }
         node._parent = this.readNode("parent", node);
         node._tag = this.read_int();
@@ -254,6 +254,15 @@ const Serializer = class {
         node.height = 512;
         console.log("NEW Container:" + n + "  x: " + node.position.x + "  y: " + node.position.y);
         console.log(node);
+        // let container = new PIXI.Container();
+        // container.width = 512;
+        // container.height = 512;
+        // container.position.x = 0;
+        // container.position.y = 0;
+        // container._position_x = container.position.x;
+        // container._position_y = container.position.y;
+        // stage.addChild(container);
+
         return node;
     }
 
@@ -261,9 +270,6 @@ const Serializer = class {
         let node = new PIXI.Container();
         this.m_in[n] = node;
         node._level = parent._level + 1;
-        if (parent._level >= 0) {
-            parent.addChild(node);
-        }
         console.log("[D] deserialize_ProtectedNode");
         node.position.x = -200 + this.read_float();
         node.position.y = 20 + _h - this.read_float();
@@ -496,7 +502,7 @@ const Serializer = class {
         console.log(stage);
         console.log(this.m_in);
 
-        stage.addChild(this.check2());
+        // stage.addChild(this.check2());
 
     }
 }
