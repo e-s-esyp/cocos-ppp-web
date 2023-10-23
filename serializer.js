@@ -49,7 +49,7 @@ const Serializer = class {
         this.action_manager = new ActionManager();
     }
 
-    async load_data(data) {
+    load_data(data) {
         // noinspection JSCheckFunctionSignatures
         this.base = new Uint8Array(data);
         console.log(this.base);
@@ -299,16 +299,6 @@ const Serializer = class {
         this.read_int64();
         scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node);
         scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node);
-        // node.width = 512;
-        // node.height = 512;
-        // node.position.y += 1334;
-        // let text1 = new PIXI.Text("text2", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-        // text1.position.x = _w / 2;
-        // text1.position.y = _h / 8;
-        // text1.anchor.x = 0.5;
-        // text1.anchor.y = 0.5;
-        // node.addChild(text1);
-
         return scene;
     }
 
@@ -334,7 +324,6 @@ const Serializer = class {
         sprite._file = name;
         sprite._text = "file: " + name;
         sprite.children = tmp.children;
-        // sprite.scale.set(_scale, _scale);
         // this.check(sprite, name);
         sprite.alpha = 0.5;
         return sprite;
@@ -373,7 +362,7 @@ const Serializer = class {
         let h = this.read_float();
         let name = this.read_string();
         let sprite = PIXI.Sprite.from("res/" + name);
-        sprite.position.set(x,y);
+        sprite.position.set(x, y);
         sprite.anchor.set(0.5, 0.5);
         sprite.width = w;
         sprite.height = h;
@@ -382,10 +371,10 @@ const Serializer = class {
         let font = this.read_string();
         let s = this.read_float();
         let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
-        text.position.set(x,y);
+        text.position.set(x, y);
         text.anchor.set(0.5, 0.5);
         let node = new PIXI.Container();
-        node.position.set(0,0);
+        node.position.set(0, 0);
         node.width = w;
         node.height = h;
         node.addChild(sprite);
@@ -467,10 +456,8 @@ const Serializer = class {
 
         let text2 = new PIXI.Text(name1, {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
         text2.scale.set(1.5, 1.5);
-        text2.position.x = 0;
-        text2.position.y = 0;
-        text2.anchor.x = 0.5;
-        text2.anchor.y = 0.5;
+        text2.position.set(0, 0);
+        text2.anchor.set(0.5, 0.5);
         text2.rotation = -0.5;
         text2.alpha = 0.5;
         text2._name = "check";
@@ -479,8 +466,18 @@ const Serializer = class {
         node1.addChild(text2);
     }
 
+    check2() {
+        let text2 = new PIXI.Text("TEST", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
+        text2.scale.set(1.5, 1.5);
+        text2.position.set(_w / 2, _h / 2);
+        text2.anchor.set(0.5, 0.5);
+        text2.rotation = -0.5;
+        text2.alpha = 0.5;
+        text2._name = "TEST";
+        return text2;
+    }
+
     loadScene() {
-        // stage.children = [];
         _place.removeChild(app.view);
         _w = this.read_float();// * scale;
         _h = this.read_float();// * scale;
@@ -493,7 +490,6 @@ const Serializer = class {
         stage = app.stage;
         stage._level = 0;
         stage.scale.set(_scale, _scale);
-        // stage.position.set(0, 128);
 
         let time = new PIXI.Text("---", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
         time.position.x = _w / 2;
@@ -508,37 +504,8 @@ const Serializer = class {
         this.readActionManager(stage);
         console.log(stage);
         console.log(this.m_in);
-//----------------------------------------------------------------------------------------------------------------------
-//         let container1 = new PIXI.Container();
-//         container1.scale.set(0.5, 0.5);
-//         container1.width = 512;
-//         container1.height = 512;
-//         container1.position.x = 0;
-//         container1.position.y = 0;
-//         container1.alpha = 0.5;
-//         container1.rotation = 0.1;
-//         stage.addChild(container1);
 
-        // let text1 = new PIXI.Text("text1", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-        // text1.position.x = _w / 2;
-        // text1.position.y = _h / 8;
-        // text1.anchor.x = 0.5;
-        // text1.anchor.y = 0.5;
-        // container.addChild(text1);
-        // let sprite1 = PIXI.Sprite.from("res/" + "HelloWorld.png");
-        // sprite1.position.x = 3*_w / 4;
-        // sprite1.position.y = _h / 2;
-        // sprite1.anchor.x = 0.5;
-        // sprite1.anchor.y = 0.5;
-        // sprite1._name = "sprite";
-        // container1.addChild(sprite1);
-        // let sprite2 = PIXI.Sprite.from("res/" + "HelloWorld.png");
-        // sprite2.position.x = 0;
-        // sprite2.position.y = 0;
-        // sprite2.anchor.x = 0;
-        // sprite2.anchor.y = 0.5;
-        // sprite2._name = "sprite";
-        // sprite1.addChild(sprite2);
+        stage.addChild(this.check2());
 
     }
 }
