@@ -10,6 +10,7 @@ class Type {
     static RotateTo = 8;
     static CallFunc = 9;
     static ProtectedNode = 10;
+    static Button = 11;
     static end = 0x12357;
 }
 
@@ -180,6 +181,12 @@ const Serializer = class {
                     parent.addChild(new_node);
                     new_node._name = "ProtectedNode " + n;
                     break;
+                case Type.Button:
+                    new_node = this.deserialize_Button(parent, n);
+                    console.log("[D] Button: " + name + " [" + new_node + "](" + n + " - new)");
+                    parent.addChild(new_node);
+                    new_node._name = "Button " + n;
+                    break;
                 default:
                     new_node = null;
             }
@@ -340,7 +347,7 @@ const Serializer = class {
         tmp._name = "tmp parent";
         let node = this.deserialize_node(tmp, 12357);
         let mes = this.read_string();
-        let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center'});
+        let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'left'});
         this.m_in[n] = text;
         text.font = this.read_string();
         text.size = this.read_float();
@@ -354,8 +361,27 @@ const Serializer = class {
         text.visible = node.visible;
         text.anchor.x = 0.5;
         text.anchor.y = 0.5;
+        text.shadowColor = 0x0;
+        text.align = 'left';
         console.log("[Label] x:" + text.position.x + " y:" + text.position.y + " " + mes);
         return text;
+    }
+
+    deserialize_Button(parent, n) {
+        let x = this.read_float();
+        let y = _h - this.read_float();
+        let w = this.read_float();
+        let h = this.read_float();
+        let name = this.read_string();
+        let sprite = PIXI.Sprite.from("res/" + name);
+        sprite.position.x = x;
+        sprite.position.y = y;
+        sprite.width = w;
+        sprite.height = h;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
+        sprite._text = name;
+        return sprite;
     }
 
     readAction(node) {
