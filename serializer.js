@@ -150,9 +150,7 @@ const Serializer = class {
                 case Type.scene:
                     new_node = this.deserialize_scene(parent, n);
                     console.log("[D] Scene: " + name + " [" + new_node + "](" + n + " - new)");
-                    // parent.addChild(new_node);
-                    parent.position.x = new_node.position.x;
-                    parent.position.y = new_node.position.y;
+                    parent.addChild(new_node);
                     new_node._name = "scene " + n;
                     break;
                 case Type.camera:
@@ -292,14 +290,15 @@ const Serializer = class {
 
     deserialize_scene(parent, n) {
         console.log("[D] deserialize_scene");
-        let node = this.deserialize_node(parent, n);
-        node._name = "scene";
+        let scene = new PIXI.Container();
+        let node = this.deserialize_node(scene, n);
+        scene._name = "scene";
         this.read_int64();
-        node._defaultCamera = this.readNode("defaultCamera", node);
-        node._cameraOrderDirty = this.read_bool();
+        scene._defaultCamera = this.readNode("defaultCamera", node);
+        scene._cameraOrderDirty = this.read_bool();
         this.read_int64();
-        node._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node);
-        node._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node);
+        scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node);
+        scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node);
         // node.width = 512;
         // node.height = 512;
         // node.position.y += 1334;
@@ -310,7 +309,7 @@ const Serializer = class {
         // text1.anchor.y = 0.5;
         // node.addChild(text1);
 
-        return node;
+        return scene;
     }
 
     deserialize_sprite(parent, n) {
@@ -374,14 +373,24 @@ const Serializer = class {
         let h = this.read_float();
         let name = this.read_string();
         let sprite = PIXI.Sprite.from("res/" + name);
-        sprite.position.x = x;
-        sprite.position.y = y;
+        sprite.position.set(x,y);
+        sprite.anchor.set(0.5, 0.5);
         sprite.width = w;
         sprite.height = h;
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
         sprite._text = name;
-        return sprite;
+        let mes = this.read_string();
+        let font = this.read_string();
+        let s = this.read_float();
+        let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
+        text.position.set(x,y);
+        text.anchor.set(0.5, 0.5);
+        let node = new PIXI.Container();
+        node.position.set(0,0);
+        node.width = w;
+        node.height = h;
+        node.addChild(sprite);
+        node.addChild(text);
+        return node;
     }
 
     readAction(node) {
