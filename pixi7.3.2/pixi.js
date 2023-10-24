@@ -16900,7 +16900,7 @@ Please use Assets.add({ alias, src, data, format, loadParser }) instead.`), asse
     // @see https://www.khronos.org/registry/OpenGL/extensions/AMD/AMD_compressed_ATC_texture.txt
     // WEBGL_compressed_texture_atc
     35986: 0.5,
-    35986: 1,
+    35987: 1,
     34798: 1,
     // @see https://registry.khronos.org/OpenGL/extensions/KHR/KHR_texture_compression_astc_hdr.txt
     // WEBGL_compressed_texture_astc
