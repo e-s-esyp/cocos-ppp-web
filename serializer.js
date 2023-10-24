@@ -355,6 +355,9 @@ const Serializer = class {
         tmp._name = "tmp parent";
         let node = this.deserialize_node(tmp, 12357, level);
         let name = this.read_string();
+        if (name === "") {
+            name = "HelloWorld.png";
+        }
         let sprite = PIXI.Sprite.from("res/" + name);
         this.m_in[n] = sprite;
         sprite.visible = node.visible;
@@ -411,6 +414,9 @@ const Serializer = class {
         let w = this.read_float();
         let h = this.read_float();
         let name = this.read_string();
+        if (name === "") {
+            name = "HelloWorld.png";
+        }
         let sprite = PIXI.Sprite.from("res/" + name);
         sprite.position.set(x, y);
         sprite.anchor.set(0.5, 0.5);
