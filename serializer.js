@@ -205,15 +205,14 @@ const Serializer = class {
             switch (t) {
                 case Type.node:
                     new_node = this.deserialize_node(parent, n, level);
-                    console.log("[D] " + tab_level[level] + "done Node: " + name + " (" + n + " - new)");
                     new_node._name = "node" + n;
+                    console.log("[D] " + tab_level[level] + "done Node: " + name + " (" + n + " - new)");
                     break;
                 case Type.scene:
                     new_node = this.deserialize_scene(parent, n, level);
                     console.log("[D] " + tab_level[level] + "Scene: " + name + " [" + new_node + "](" + n + " - new)");
                     console.log(parent.children);
                     console.log(new_node.children);
-                    parent.addChild(new_node);
                     break;
                 case Type.camera:
                     new_node = new PIXI.Container();
@@ -233,14 +232,13 @@ const Serializer = class {
                     break;
                 case Type.ProtectedNode:
                     new_node = this.deserialize_ProtectedNode(parent, n, level);
-                    console.log("[D] " + tab_level[level] + "done ProtectedNode: " + name + " (" + n + " - new)");
-                    console.log("[STAGE] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
                     new_node._name = "ProtectedNode" + n;
+                    console.log("[D] " + tab_level[level] + "done ProtectedNode: " + name + " (" + n + " - new)");
                     break;
                 case Type.Button:
                     new_node = this.deserialize_Button(parent, n, level);
-                    console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
                     new_node._name = "Button" + n;
+                    console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
                 default:
                     new_node = null;
