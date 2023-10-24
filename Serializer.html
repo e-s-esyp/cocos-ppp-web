@@ -5,7 +5,7 @@
     <!--  <script src="https://pixijs.download/release/pixi.min.js"></script>-->
     <!--  <script src="res/socket.io.min.js"></script>-->
 <!--    <script src="pixi.iwm.js"></script>-->
-    <script src="pixi.min.js"></script>
+    <script src="pixi7.3.2/pixi.js"></script>
     <script src="client.js"></script>
     <script src="serializer.js"></script>
     <script src="debug.js"></script>
@@ -199,9 +199,12 @@
     let _h = 512;
     let _w = 512;
     let app = new PIXI.Application({width: _w, height: _h});
+    // let app = new PIXI.Renderer();
     // app.renderer.background.color = 0x4F8FFF;
     // app.renderer.background.color = 0;
     // document.body.appendChild(app.view);
+    console.log(app);
+    console.log(app.view);
     _place.appendChild(app.view);
 
     console.log("loading");
