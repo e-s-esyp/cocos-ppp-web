@@ -41,6 +41,8 @@ const ActionManager = class {
     }
 }
 
+let tab_level = ["", "\t", "\t\t", "\t\t\t", "\t\t\t\t", "\t\t\t\t\t", "\t\t\t\t\t\t", "\t\t\t\t\t\t\t"];
+
 const Serializer = class {
     constructor() {
         this.base = null;
@@ -124,64 +126,64 @@ const Serializer = class {
         return r;
     }
 
-    readNode(name, parent) {
-        console.log("[D] getNode parent: " + parent._name + " L:" + parent._level + " node: " + name + "   i: " + this.i);
+    readNode(name, parent, level) {
+        console.log("[D] " + tab_level[level] + "getNode parent: " + parent._name + " L:" + parent._level + " node: " + name + "   i: " + this.i);
         if (this.get_int() === 0) {
             this.read_int();
             return null;
         }
         let n = this.read_int();
         if (n !== -1) {
-            console.log("[D] found node: " + n);
+            console.log("[D] " + tab_level[level] + "found node: " + n);
             return this.m_in[n];
         } else {
-            console.log("[D] new node started");// + "(" + n.toString(16) + ")");
+            console.log("[D] " + tab_level[level] + "new node started");// + "(" + n.toString(16) + ")");
             n = this.read_int();
             let t = this.read_int();
-            console.log("[D] n: " + n + "  t: " + t);
+            console.log("[D] " + tab_level[level] + "n: " + n + "  t: " + t);
             let new_node;
             switch (t) {
                 case Type.node:
-                    new_node = this.deserialize_node(parent, n);
-                    console.log("[D] done Node: " + name + " (" + n + " - new)");
+                    new_node = this.deserialize_node(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "done Node: " + name + " (" + n + " - new)");
                     parent.addChild(new_node);
                     new_node._name = "node " + n;
                     break;
                 case Type.scene:
-                    new_node = this.deserialize_scene(parent, n);
-                    console.log("[D] Scene: " + name + " [" + new_node + "](" + n + " - new)");
+                    new_node = this.deserialize_scene(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "Scene: " + name + " [" + new_node + "](" + n + " - new)");
                     parent.addChild(new_node);
                     new_node._name = "scene " + n;
                     break;
                 case Type.camera:
                     new_node = {_name: "camera", _level: 0};
-                    console.log("[D] Camera: " + name + " [" + new_node + "](" + n + " - new)");
+                    console.log("[D] " + tab_level[level] + "Camera: " + name + " [" + new_node + "](" + n + " - new)");
                     new_node._name = "camera " + n;
                     break;
                 case Type.sprite:
-                    new_node = this.deserialize_sprite(parent, n);
-                    console.log("[D] Sprite: " + name + " [" + new_node._name + "](" + n + " - new) parent:");
+                    new_node = this.deserialize_sprite(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "Sprite: " + name + " [" + new_node._name + "](" + n + " - new) parent:");
                     console.log(parent);
                     // stage.addChild(new_node);
                     parent.addChild(new_node);
                     new_node._name = "sprite " + n;
                     break;
                 case Type.label:
-                    new_node = this.deserialize_label(parent, n);
-                    console.log("[D] Label: " + name + " [" + new_node + "](" + n + " - new)");
+                    new_node = this.deserialize_label(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "Label: " + name + " [" + new_node + "](" + n + " - new)");
                     parent.addChild(new_node);
                     new_node._name = "label " + n;
                     break;
                 case Type.ProtectedNode:
-                    new_node = this.deserialize_ProtectedNode(parent, n);
-                    console.log("[D] done ProtectedNode: " + name + " (" + n + " - new)");
-                    console.log("[STAGE] parent: " + parent._name + " L:" + parent._level);
+                    new_node = this.deserialize_ProtectedNode(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "done ProtectedNode: " + name + " (" + n + " - new)");
+                    console.log("[STAGE] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
                     parent.addChild(new_node);
                     new_node._name = "ProtectedNode " + n;
                     break;
                 case Type.Button:
-                    new_node = this.deserialize_Button(parent, n);
-                    console.log("[D] Button: " + name + " [" + new_node + "](" + n + " - new)");
+                    new_node = this.deserialize_Button(parent, n, level);
+                    console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
                     parent.addChild(new_node);
                     new_node._name = "Button " + n;
                     break;
@@ -190,13 +192,13 @@ const Serializer = class {
             }
             if (new_node !== null) {
                 new_node._level = parent._level + 1;
-                console.log("[STAGE] parent: " + parent._name + " L:" + parent._level);
-                console.log("[STAGE] child: " + new_node._name + " L:" + new_node._level);
+                console.log("[STAGE] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
+                console.log("[STAGE] " + tab_level[level] + "child: " + new_node._name + " L:" + new_node._level);
                 new_node._n = n;
             }
             this.m_in[n] = new_node;
             if (this.read_int() === Type.end) {
-                console.log("[-] End of " + name + " [" + new_node._name + "](" + n + ")");
+                console.log("[-] " + tab_level[level] + "End of " + name + " [" + new_node._name + "](" + n + ")");
             } else {
                 console.log("[Error] " + name + " [" + new_node._name + "](" + n + ")");
             }
@@ -204,14 +206,14 @@ const Serializer = class {
         }
     }
 
-    deserialize_node(parent, n) {
+    deserialize_node(parent, n, level) {
         let node = new PIXI.Container();
         this.m_in[n] = node;
         node._level = parent._level + 1;
         if (parent._level >= 0) {
             parent.addChild(node);
         }
-        console.log("[D] deserialize_node");
+        console.log("[D] " + tab_level[level] + "deserialize_node");
         node._rotationX = this.read_float();
         node._rotationY = this.read_float();
         node._rotationZ_X = this.read_float();
@@ -235,12 +237,13 @@ const Serializer = class {
         node.s_globalOrderOfArrival = this.read_int();
         //-<<< children >>>-
         let size = this.read_int();
-        console.log("[D] children_size: " + size);//+ "(" + size.toString(16) + ")");
+        console.log("[D] " + tab_level[level] + "children_size: " + size);//+ "(" + size.toString(16) + ")");
         for (let i = 0; i < size; ++i) {
+            console.log("[D] " + tab_level[level] + "CHILD: " + i);
             node._name = parent._name + "_node" + i;
-            this.readNode(node._name, parent);
+            this.readNode(node._name, parent, level + 1);
         }
-        node._parent = this.readNode("parent", node);
+        node._parent = this.readNode("parent", node, level + 1);
         node._tag = this.read_int();
         node._hashOfName = this.read_int64();
         if (_read_visible) {
@@ -252,52 +255,53 @@ const Serializer = class {
         // node.position.y = _h - node._position_y;
         node.width = 512;
         node.height = 512;
-        console.log("NEW Container:" + n + "  x: " + node.position.x + "  y: " + node.position.y);
+        console.log("[NEW] " + tab_level[level] + "Container:" + n + "  x: " + node.position.x + "  y: " + node.position.y);
         console.log(node);
         return node;
     }
 
-    deserialize_ProtectedNode(parent, n) {
+    deserialize_ProtectedNode(parent, n, level) {
         let node = new PIXI.Container();
         this.m_in[n] = node;
         node._level = parent._level + 1;
         if (parent._level >= 0) {
             parent.addChild(node);
         }
-        console.log("[D] deserialize_ProtectedNode");
+        console.log("[D] " + tab_level[level] + "deserialize_ProtectedNode");
         node.position.x = -200 + this.read_float();
         node.position.y = 20 + _h - this.read_float();
         node.position.x = 0;
         node.position.y = 0;
         //-<<< children >>>-
         let size = this.read_int();
-        console.log("[D] children_size: " + size);// + "(" + size.toString(16) + ")");
+        console.log("[D] " + tab_level[level] + "children_size: " + size);// + "(" + size.toString(16) + ")");
         for (let i = 0; i < size; ++i) {
+            console.log("[D] " + tab_level[level] + "CHILD: " + i);
             node._name = parent._name + "_node" + i;
-            this.readNode("_node" + i, node);
+            this.readNode("_node" + i, node, level + 1);
         }
         return node;
     }
 
-    deserialize_scene(parent, n) {
-        console.log("[D] deserialize_scene");
+    deserialize_scene(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_scene");
         let scene = new PIXI.Container();
-        let node = this.deserialize_node(scene, n);
+        let node = this.deserialize_node(scene, n, level);
         scene._name = "scene";
         this.read_int64();
-        scene._defaultCamera = this.readNode("defaultCamera", node);
+        scene._defaultCamera = this.readNode("defaultCamera", node, level + 1);
         scene._cameraOrderDirty = this.read_bool();
         this.read_int64();
-        scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node);
-        scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node);
+        scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node, level + 1);
+        scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node, level + 1);
         return scene;
     }
 
-    deserialize_sprite(parent, n) {
+    deserialize_sprite(parent, n, level) {
         let tmp = new PIXI.Container();
         tmp._level = parent._level + 1;
         tmp._name = "tmp parent";
-        let node = this.deserialize_node(tmp, 12357);
+        let node = this.deserialize_node(tmp, 12357, level);
         let name = this.read_string();
         let sprite = PIXI.Sprite.from("res/" + name);
         this.m_in[n] = sprite;
@@ -320,11 +324,11 @@ const Serializer = class {
         return sprite;
     }
 
-    deserialize_label(parent, n) {
+    deserialize_label(parent, n, level) {
         let tmp = new PIXI.Container();
         tmp._level = parent._level + 1;
         tmp._name = "tmp parent";
-        let node = this.deserialize_node(tmp, 12357);
+        let node = this.deserialize_node(tmp, 12357, level);
         let mes = this.read_string();
         let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'left'});
         this.m_in[n] = text;
@@ -342,11 +346,11 @@ const Serializer = class {
         text.anchor.y = 0.5;
         text.shadowColor = 0x0;
         text.align = 'left';
-        console.log("[Label] x:" + text.position.x + " y:" + text.position.y + " " + mes);
+        console.log("[Label] " + tab_level[level] + "x:" + text.position.x + " y:" + text.position.y + " " + mes);
         return text;
     }
 
-    deserialize_Button(parent, n) {
+    deserialize_Button(parent, n, level) {
         let x = this.read_float();
         let y = _h - this.read_float();
         let w = this.read_float();
@@ -402,11 +406,11 @@ const Serializer = class {
         return a;
     }
 
-    readActionManager(parent) {
+    readActionManager(parent, level) {
         let size = this.read_int();
         console.log("[D] actions_size: " + size + "(" + size.toString(16) + ")");
         for (let i = 0; i < size; ++i) {
-            let node = this.readNode("target" + i, parent);
+            let node = this.readNode("target" + i, parent, level + 1);
             let s = this.read_int();
             console.log("[D] [" + node + "] actions size: " + s);
             for (let j = 0; j < s; ++j) {
@@ -465,7 +469,11 @@ const Serializer = class {
         text2.rotation = -0.5;
         text2.alpha = 0.5;
         text2._name = "TEST";
-        return text2;
+        let c1 = new PIXI.Container();
+        c1.addChild(text2);
+        c1.visible = false;
+        // c1.position.set(_w / 2, _h / 2);
+        return c1;
     }
 
     loadScene() {
@@ -491,8 +499,8 @@ const Serializer = class {
         stage.addChild(time);
         ask(time);
         stage._name = "main_scene";
-        this.readNode("main_scene", stage);
-        this.readActionManager(stage);
+        this.readNode("main_scene", stage, 1);
+        this.readActionManager(stage, 1);
         console.log(stage);
         console.log(this.m_in);
 
