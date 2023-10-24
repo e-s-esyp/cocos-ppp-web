@@ -11,6 +11,7 @@ class Type {
     static CallFunc = 9;
     static ProtectedNode = 10;
     static Button = 11;
+    static Layout = 12;
     static end = 0x12357;
 }
 
@@ -240,6 +241,12 @@ const Serializer = class {
                     new_node._name = "Button" + n;
                     console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
+                case Type.Layout:
+                    new_node = new PIXI.Container();
+                    new_node._text = "LayoutContainer" + (i_Container++);
+                    new_node._name = "Layout" + n;
+                    console.log("[D] " + tab_level[level] + "Layout: " + name + " [" + new_node + "](" + n + " - new)");
+                    break;
                 default:
                     new_node = null;
             }
@@ -409,6 +416,7 @@ const Serializer = class {
 
     deserialize_Button(parent, n, level) {
         console.log("[D] " + tab_level[level] + "deserialize_Button: " + parent._name + "  L:" + parent._level);
+        let visible = this.read_bool();
         let x = this.read_float();
         let y = _h - this.read_float();
         let w = this.read_float();
@@ -418,6 +426,7 @@ const Serializer = class {
             name = "HelloWorld.png";
         }
         let sprite = PIXI.Sprite.from("res/" + name);
+        sprite.visible = visible;
         sprite.position.set(x, y);
         sprite.anchor.set(0.5, 0.5);
         sprite.width = w;
