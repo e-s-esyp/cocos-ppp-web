@@ -128,6 +128,64 @@ const Serializer = class {
         return r;
     }
 
+    check(node1, name1) {
+        // let container1 = new PIXI.Container();
+        // container1.scale.set(0.3, 0.3);
+        // container1.width = 512;
+        // container1.height = 512;
+        // container1.position.x = 0;
+        // container1.position.y = 100;
+        // // container1.position.x = -node1.width;
+        // // container1.position.y = -node1.height;
+        // container1.alpha = 0.5;
+        // container1.rotation = -0.2;
+        // node1.addChild(container1);
+        //
+        // let sprite1 = PIXI.Sprite.from("res/" + "background/background.png");
+        // sprite1.position.x = 0;
+        // sprite1.position.y = 0;
+        // sprite1.anchor.x = 0;
+        // sprite1.anchor.y = 0;
+        // sprite1._name = "sprite";
+        // container1.addChild(sprite1);
+        //
+        // let sprite2 = PIXI.Sprite.from("res/" + "icon/logo1_eng.png");
+        // sprite2.scale.set(0.7, 0.7);
+        // sprite2.position.x = 0;
+        // sprite2.position.y = 0;
+        // sprite2.anchor.x = 0.5;
+        // sprite2.anchor.y = 0.5;
+        // sprite2._name = "sprite";
+        // sprite1.addChild(sprite2);
+
+        let text2 = new PIXI.Text(name1, {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
+        text2.scale.set(1.5, 1.5);
+        text2.position.set(0, 0);
+        text2.anchor.set(0.5, 0.5);
+        text2.rotation = -0.5;
+        text2.alpha = 0.5;
+        text2._name = "check";
+        text2.visible = node1.visible;
+        // text2.visible = false;
+        node1.addChild(text2);
+    }
+
+    check2() {
+        let text2 = new PIXI.Text("TEST", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
+        text2.scale.set(1.5, 1.5);
+        text2.position.set(_w / 2, _h / 2);
+        text2.anchor.set(0.5, 0.5);
+        text2.rotation = -0.5;
+        text2.alpha = 0.5;
+        text2._name = "TEST";
+        let c1 = new PIXI.Container();
+        c1._text = "Check2Container" + (i_Container++);
+        c1.addChild(text2);
+        c1.visible = true;
+        // c1.position.set(_w / 2, _h / 2);
+        return c1;
+    }
+
     readNode(name, parent, level) {
         console.log("[D] " + tab_level[level] + "getNode parent: " + parent._name + " L:" + parent._level + " node: " + name + "   i: " + this.i);
         if (this.get_int() === 0) {
@@ -153,6 +211,9 @@ const Serializer = class {
                 case Type.scene:
                     new_node = this.deserialize_scene(parent, n, level);
                     console.log("[D] " + tab_level[level] + "Scene: " + name + " [" + new_node + "](" + n + " - new)");
+                    console.log(parent.children);
+                    console.log(new_node.children);
+                    parent.addChild(new_node);
                     break;
                 case Type.camera:
                     new_node = new PIXI.Container();
@@ -191,10 +252,13 @@ const Serializer = class {
                 console.log("[STG] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
                 console.log("[STG] " + tab_level[level] + "child: " + new_node._name + " L:" + new_node._level);
                 new_node._n = n;
+            } else {
+                return new_node;
             }
             this.m_in[n] = new_node;
             if (this.read_int() === Type.end) {
                 console.log("[-] " + tab_level[level] + "End of " + name + " [" + new_node._name + "](" + n + ")");
+                console.log(parent.children);
             } else {
                 console.log("[Error] " + name + " [" + new_node._name + "](" + n + ")");
             }
@@ -205,6 +269,7 @@ const Serializer = class {
     deserialize_node(parent, n, level) {
         console.log("[D] " + tab_level[level] + "deserialize_node: " + parent._name + "  L:" + parent._level);
         let node = new PIXI.Container();
+        node._name = parent._name + "_node_"
         node._text = "NodeContainer" + (i_Container++);
         this.m_in[n] = node;
         node._level = parent._level + 1;
@@ -234,8 +299,7 @@ const Serializer = class {
         console.log("[D] " + tab_level[level] + "children_size: " + size);//+ "(" + size.toString(16) + ")");
         for (let i = 0; i < size; ++i) {
             console.log("[D] " + tab_level[level] + "CHILD: " + i);
-            node._name = parent._name + "_node" + i;
-            this.readNode(node._name, parent, level + 1);
+            this.readNode(parent._name + "_node" + i, node, level + 1);
         }
         node._parent = this.readNode("parent", node, level + 1);
         node._tag = this.read_int();
@@ -245,10 +309,6 @@ const Serializer = class {
             node.position.x = 0;
             node.position.y = 0;
         }
-        // node.position.x = node._position_x;
-        // node.position.y = _h - node._position_y;
-        node.width = 512;
-        node.height = 512;
         console.log("[NEW] " + tab_level[level] + "Container:" + n +
             "  x: " + node.position.x + "  y: " + node.position.y + "  " + node._text);
         console.log(parent.children);
@@ -277,18 +337,18 @@ const Serializer = class {
     }
 
     deserialize_scene(parent, n, level) {
-        console.log("[D] " + tab_level[level] + "deserialize_scene: " + parent._name + "  L:" + parent._level);
-        let scene = new PIXI.Container();
-        scene._text = "SceneContainer" + (i_Container++);
+        console.log("[D] " + tab_level[level] + "deserialize_scene: parent:" + parent._name + "  L:" + parent._level);
+        let scene = this.deserialize_node(parent, n, level);
         scene._level = level + 1;
         scene._name = "scene" + n;
-        let node = this.deserialize_node(scene, n, level);
         this.read_int64();
-        scene._defaultCamera = this.readNode("defaultCamera", node, level + 1);
+        let tmp = new PIXI.Container();
+        scene._defaultCamera = this.readNode("defaultCamera", tmp, level + 1);
         scene._cameraOrderDirty = this.read_bool();
         this.read_int64();
-        scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", node, level + 1);
-        scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", node, level + 1);
+        scene._physics3dDebugCamera = this.readNode("physics3dDebugCamera", tmp, level + 1);
+        scene._navMeshDebugCamera = this.readNode("navMeshDebugCamera", tmp, level + 1);
+        console.log("[--] " + tab_level[level] + "deserialize_scene: parent:" + parent._name + "  L:" + parent._level);
         return scene;
     }
 
@@ -420,64 +480,6 @@ const Serializer = class {
         }
     }
 
-    check(node1, name1) {
-        // let container1 = new PIXI.Container();
-        // container1.scale.set(0.3, 0.3);
-        // container1.width = 512;
-        // container1.height = 512;
-        // container1.position.x = 0;
-        // container1.position.y = 100;
-        // // container1.position.x = -node1.width;
-        // // container1.position.y = -node1.height;
-        // container1.alpha = 0.5;
-        // container1.rotation = -0.2;
-        // node1.addChild(container1);
-        //
-        // let sprite1 = PIXI.Sprite.from("res/" + "background/background.png");
-        // sprite1.position.x = 0;
-        // sprite1.position.y = 0;
-        // sprite1.anchor.x = 0;
-        // sprite1.anchor.y = 0;
-        // sprite1._name = "sprite";
-        // container1.addChild(sprite1);
-        //
-        // let sprite2 = PIXI.Sprite.from("res/" + "icon/logo1_eng.png");
-        // sprite2.scale.set(0.7, 0.7);
-        // sprite2.position.x = 0;
-        // sprite2.position.y = 0;
-        // sprite2.anchor.x = 0.5;
-        // sprite2.anchor.y = 0.5;
-        // sprite2._name = "sprite";
-        // sprite1.addChild(sprite2);
-
-        let text2 = new PIXI.Text(name1, {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-        text2.scale.set(1.5, 1.5);
-        text2.position.set(0, 0);
-        text2.anchor.set(0.5, 0.5);
-        text2.rotation = -0.5;
-        text2.alpha = 0.5;
-        text2._name = "check";
-        text2.visible = node1.visible;
-        // text2.visible = false;
-        node1.addChild(text2);
-    }
-
-    check2() {
-        let text2 = new PIXI.Text("TEST", {fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center'});
-        text2.scale.set(1.5, 1.5);
-        text2.position.set(_w / 2, _h / 2);
-        text2.anchor.set(0.5, 0.5);
-        text2.rotation = -0.5;
-        text2.alpha = 0.5;
-        text2._name = "TEST";
-        let c1 = new PIXI.Container();
-        c1._text = "Check2Container" + (i_Container++);
-        c1.addChild(text2);
-        c1.visible = false;
-        // c1.position.set(_w / 2, _h / 2);
-        return c1;
-    }
-
     loadScene() {
         _place.removeChild(app.view);
         _w = this.read_float();// * scale;
@@ -500,14 +502,12 @@ const Serializer = class {
         time._name = "server time";
         stage.addChild(time);
         ask(time);
+
         i_Container = 0;
         stage._name = "main_scene";
         this.readNode("main_scene", stage, 1);
         this.readActionManager(stage, 1);
         console.log(stage);
         console.log(this.m_in);
-
-        // stage.addChild(this.check2());
-
     }
 }
