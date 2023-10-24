@@ -504,7 +504,7 @@ const Serializer = class {
         console.log(stage);
         console.log(this.m_in);
 
-        stage.addChild(this.check2());
+        // stage.addChild(this.check2());
 
     }
 }
