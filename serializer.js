@@ -13,6 +13,7 @@ class Type {
     static Button = 11;
     static Layout = 12;
     static ImageView = 13;
+    static Text = 14;
     static end = 0x12357;
 }
 
@@ -261,6 +262,12 @@ const Serializer = class {
                     new_node._type = "ImageView";
                     console.log("[D] " + tab_level[level] + "ImageView: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
+                case Type.Text:
+                    new_node = this.deserialize_Text(parent, n, level);
+                    new_node._name = "Text" + n;
+                    new_node._type = "Text";
+                    console.log("[D] " + tab_level[level] + "Text: " + name + " [" + new_node + "](" + n + " - new)");
+                    break;
                 default:
                     new_node = null;
             }
@@ -462,7 +469,6 @@ const Serializer = class {
             name = "HelloWorld.png";
         }
         let sprite = PIXI.Sprite.from("res/" + name);
-        sprite.visible = visible;
         sprite.position.set(x, y);
         sprite.anchor.set(0.5, 0.5);
         sprite.width = w;
@@ -479,6 +485,7 @@ const Serializer = class {
         text._name = "Button" + n;
         text._type = "text";
         let node = new PIXI.Container();
+        node.visible = visible;
         node._text = "ButtonContainer" + (i_Container++);
         node.position.set(0, 0);
         node.width = w;
@@ -486,6 +493,26 @@ const Serializer = class {
         node.addChild(sprite);
         node.addChild(text);
         return node;
+    }
+
+    deserialize_Text(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_Text: " + parent._name + "  L:" + parent._level);
+        let visible = this.read_bool();
+        // let x = this.read_float();
+        // let y = _h - this.read_float();
+        // let w = this.read_float();
+        // let h = this.read_float();
+        // let mes = this.read_string();
+        // let font = this.read_string();
+        // let s = this.read_float();
+        // let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
+        // text.position.set(x, y);
+        let text = new PIXI.Container();
+        text.visible = visible;
+        // text.anchor.set(0.5, 0.5);
+        text._name = "Text" + n;
+        text._type = "text";
+        return text;
     }
 
     readAction(node) {
