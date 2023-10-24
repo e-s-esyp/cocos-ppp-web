@@ -224,8 +224,7 @@ const Serializer = class {
                 case Type.sprite:
                     new_node = this.deserialize_sprite(parent, n, level);
                     new_node._name = "sprite" + n;
-                    console.log("[D] " + tab_level[level] + "Sprite: " + name + " [" + new_node._name + "](" + n + " - new) parent:");
-                    console.log(parent);
+                    console.log("[D] " + tab_level[level] + "Sprite: " + name + " [" + new_node._name + "](" + n + " - new)");
                     break;
                 case Type.label:
                     new_node = this.deserialize_label(parent, n, level);
@@ -258,7 +257,6 @@ const Serializer = class {
             this.m_in[n] = new_node;
             if (this.read_int() === Type.end) {
                 console.log("[-] " + tab_level[level] + "End of " + name + " [" + new_node._name + "](" + n + ")");
-                console.log(parent.children);
             } else {
                 console.log("[Error] " + name + " [" + new_node._name + "](" + n + ")");
             }
@@ -311,7 +309,6 @@ const Serializer = class {
         }
         console.log("[NEW] " + tab_level[level] + "Container:" + n +
             "  x: " + node.position.x + "  y: " + node.position.y + "  " + node._text);
-        console.log(parent.children);
         return node;
     }
 
