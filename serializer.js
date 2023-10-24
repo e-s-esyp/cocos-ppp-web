@@ -12,6 +12,7 @@ class Type {
     static ProtectedNode = 10;
     static Button = 11;
     static Layout = 12;
+    static ImageView = 13;
     static end = 0x12357;
 }
 
@@ -211,6 +212,7 @@ const Serializer = class {
                     break;
                 case Type.scene:
                     new_node = this.deserialize_scene(parent, n, level);
+                    new_node._type = "scene";
                     console.log("[D] " + tab_level[level] + "Scene: " + name + " [" + new_node + "](" + n + " - new)");
                     console.log(parent.children);
                     console.log(new_node.children);
@@ -219,16 +221,19 @@ const Serializer = class {
                     new_node = new PIXI.Container();
                     new_node._text = "CameraContainer" + (i_Container++);
                     new_node._name = "camera" + n;
+                    new_node._type = "camera";
                     console.log("[D] " + tab_level[level] + "Camera: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
                 case Type.sprite:
                     new_node = this.deserialize_sprite(parent, n, level);
                     new_node._name = "sprite" + n;
+                    new_node._type = "sprite";
                     console.log("[D] " + tab_level[level] + "Sprite: " + name + " [" + new_node._name + "](" + n + " - new)");
                     break;
                 case Type.label:
                     new_node = this.deserialize_label(parent, n, level);
                     new_node._name = "label" + n;
+                    new_node._type = "label";
                     console.log("[D] " + tab_level[level] + "Label: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
                 case Type.ProtectedNode:
@@ -239,13 +244,22 @@ const Serializer = class {
                 case Type.Button:
                     new_node = this.deserialize_Button(parent, n, level);
                     new_node._name = "Button" + n;
+                    new_node._type = "Button";
                     console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
                 case Type.Layout:
                     new_node = new PIXI.Container();
                     new_node._text = "LayoutContainer" + (i_Container++);
                     new_node._name = "Layout" + n;
+                    new_node._type = "Layout";
                     console.log("[D] " + tab_level[level] + "Layout: " + name + " [" + new_node + "](" + n + " - new)");
+                    break;
+                case Type.ImageView:
+                    new_node = new PIXI.Container();
+                    new_node._text = "ImageViewContainer" + (i_Container++);
+                    new_node._name = "ImageView" + n;
+                    new_node._type = "ImageView";
+                    console.log("[D] " + tab_level[level] + "ImageView: " + name + " [" + new_node + "](" + n + " - new)");
                     break;
                 default:
                     new_node = null;
@@ -276,6 +290,9 @@ const Serializer = class {
         node._text = "NodeContainer" + (i_Container++);
         this.m_in[n] = node;
         node._level = parent._level + 1;
+        if (_read_visible) {
+            node._type = this.read_string();
+        }
         node._rotationX = this.read_float();
         node._rotationY = this.read_float();
         node._rotationZ_X = this.read_float();
@@ -323,6 +340,7 @@ const Serializer = class {
         node._text = "PrNodeContainer" + (i_Container++);
         this.m_in[n] = node;
         node._level = parent._level + 1;
+        node._type = this.read_string();
         node.position.x = -200 + this.read_float();
         node.position.y = 20 + _h - this.read_float();
         node.position.x = 0;
@@ -368,21 +386,39 @@ const Serializer = class {
         let sprite = PIXI.Sprite.from("res/" + name);
         this.m_in[n] = sprite;
         sprite.visible = node.visible;
+        let x, y, w, h;
         if (_read_visible) {
-            sprite.position.x = this.read_float();
-            sprite.position.y = _h - this.read_float();
+            x = this.read_float();
+            y = this.read_float();
+            sprite._w = w = this.read_float();
+            sprite._h = h = this.read_float();
         } else {
-            sprite.position.x = node.position.x;
-            sprite.position.y = node.position.y;
+            x = node.position.x;
+            y = node.position.y;
         }
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
+        sprite.position.x = x;
+        sprite.position.y = _h - y;
+        for (let i = 0; i < node.children.length; i++) {
+            node.children[i].position.x = node.children[i].position.x - x - w / 2;
+            // node.children[i].position.y = -node.children[i].position.y;
+            node.children[i].anchor.set(0.5, 0.5);
+            sprite.addChild(node.children[i]);
+        }
+        // (243,193)
+        // (509,416)
+        // -(376,305) + (375,667) = (-1,362)
+        // (750,-347)
+
+        //(375,667) (375,1014) = (750,1681)
+        //1334-1681=-347
+        // 1014-667=347
+        //1334+347-667-667
+        sprite.anchor.set(0.5, 0.5);
         sprite._name = "deserialized sprite";
         sprite._file = name;
-        sprite._text = "file: " + name;
-        sprite.children = tmp.children;
+        sprite._text = name;
         // this.check(sprite, name);
-        sprite.alpha = 0.5;
+        sprite.alpha = 1;
         return sprite;
     }
 
@@ -432,12 +468,16 @@ const Serializer = class {
         sprite.width = w;
         sprite.height = h;
         sprite._text = name;
+        sprite._name = "Button" + n;
+        sprite._type = "sprite";
         let mes = this.read_string();
         let font = this.read_string();
         let s = this.read_float();
         let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
         text.position.set(x, y);
         text.anchor.set(0.5, 0.5);
+        text._name = "Button" + n;
+        text._type = "text";
         let node = new PIXI.Container();
         node._text = "ButtonContainer" + (i_Container++);
         node.position.set(0, 0);

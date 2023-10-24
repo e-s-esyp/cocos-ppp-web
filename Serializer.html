@@ -4,7 +4,7 @@
     <title>serializer</title>
     <!--  <script src="https://pixijs.download/release/pixi.min.js"></script>-->
     <!--  <script src="res/socket.io.min.js"></script>-->
-<!--    <script src="pixi.iwm.js"></script>-->
+    <!--    <script src="pixi.iwm.js"></script>-->
     <script src="pixi7.3.2/pixi.js"></script>
     <script src="client.js"></script>
     <script src="serializer.js"></script>
@@ -158,7 +158,7 @@
         ---
     </li>
     <li>
-        <label for="debugview"></label><textarea id="debugview" name="debugview" rows="40" cols="100">Screen info.
+        <label for="debugview"></label><textarea id="debugview" name="debugview" rows="40" cols="150">Screen info.
         </textarea>
     </li>
 </ul>
@@ -168,6 +168,7 @@
     toggle between hiding and showing the dropdown content */
     let _scale = 0.5;
     let _place = document.body.children[1].children[0];
+
     function setScale() {
         document.getElementById("myDropdown").classList.toggle("show");
     }
@@ -198,7 +199,7 @@
     let stage;
     let _h = 512;
     let _w = 512;
-    let app = new PIXI.Application({width: _w, height: _h});
+    let app = new PIXI.Application({width: _w * _scale, height: _h * _scale});
     // let app = new PIXI.Renderer();
     // app.renderer.background.color = 0x4F8FFF;
     // app.renderer.background.color = 0;
