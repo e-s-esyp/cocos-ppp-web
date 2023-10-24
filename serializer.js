@@ -14,6 +14,8 @@ class Type {
     static end = 0x12357;
 }
 
+let i_Container = 0;
+
 const ActionManager = class {
     actions;
 
@@ -146,54 +148,48 @@ const Serializer = class {
                 case Type.node:
                     new_node = this.deserialize_node(parent, n, level);
                     console.log("[D] " + tab_level[level] + "done Node: " + name + " (" + n + " - new)");
-                    parent.addChild(new_node);
-                    new_node._name = "node " + n;
+                    new_node._name = "node" + n;
                     break;
                 case Type.scene:
                     new_node = this.deserialize_scene(parent, n, level);
                     console.log("[D] " + tab_level[level] + "Scene: " + name + " [" + new_node + "](" + n + " - new)");
-                    parent.addChild(new_node);
-                    new_node._name = "scene " + n;
                     break;
                 case Type.camera:
-                    new_node = {_name: "camera", _level: 0};
+                    new_node = new PIXI.Container();
+                    new_node._text = "CameraContainer" + (i_Container++);
+                    new_node._name = "camera" + n;
                     console.log("[D] " + tab_level[level] + "Camera: " + name + " [" + new_node + "](" + n + " - new)");
-                    new_node._name = "camera " + n;
                     break;
                 case Type.sprite:
                     new_node = this.deserialize_sprite(parent, n, level);
+                    new_node._name = "sprite" + n;
                     console.log("[D] " + tab_level[level] + "Sprite: " + name + " [" + new_node._name + "](" + n + " - new) parent:");
                     console.log(parent);
-                    // stage.addChild(new_node);
-                    parent.addChild(new_node);
-                    new_node._name = "sprite " + n;
                     break;
                 case Type.label:
                     new_node = this.deserialize_label(parent, n, level);
+                    new_node._name = "label" + n;
                     console.log("[D] " + tab_level[level] + "Label: " + name + " [" + new_node + "](" + n + " - new)");
-                    parent.addChild(new_node);
-                    new_node._name = "label " + n;
                     break;
                 case Type.ProtectedNode:
                     new_node = this.deserialize_ProtectedNode(parent, n, level);
                     console.log("[D] " + tab_level[level] + "done ProtectedNode: " + name + " (" + n + " - new)");
                     console.log("[STAGE] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
-                    parent.addChild(new_node);
-                    new_node._name = "ProtectedNode " + n;
+                    new_node._name = "ProtectedNode" + n;
                     break;
                 case Type.Button:
                     new_node = this.deserialize_Button(parent, n, level);
                     console.log("[D] " + tab_level[level] + "Button: " + name + " [" + new_node + "](" + n + " - new)");
-                    parent.addChild(new_node);
-                    new_node._name = "Button " + n;
+                    new_node._name = "Button" + n;
                     break;
                 default:
                     new_node = null;
             }
             if (new_node !== null) {
+                parent.addChild(new_node);
                 new_node._level = parent._level + 1;
-                console.log("[STAGE] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
-                console.log("[STAGE] " + tab_level[level] + "child: " + new_node._name + " L:" + new_node._level);
+                console.log("[STG] " + tab_level[level] + "parent: " + parent._name + " L:" + parent._level);
+                console.log("[STG] " + tab_level[level] + "child: " + new_node._name + " L:" + new_node._level);
                 new_node._n = n;
             }
             this.m_in[n] = new_node;
@@ -207,13 +203,11 @@ const Serializer = class {
     }
 
     deserialize_node(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_node: " + parent._name + "  L:" + parent._level);
         let node = new PIXI.Container();
+        node._text = "NodeContainer" + (i_Container++);
         this.m_in[n] = node;
         node._level = parent._level + 1;
-        if (parent._level >= 0) {
-            parent.addChild(node);
-        }
-        console.log("[D] " + tab_level[level] + "deserialize_node");
         node._rotationX = this.read_float();
         node._rotationY = this.read_float();
         node._rotationZ_X = this.read_float();
@@ -255,19 +249,18 @@ const Serializer = class {
         // node.position.y = _h - node._position_y;
         node.width = 512;
         node.height = 512;
-        console.log("[NEW] " + tab_level[level] + "Container:" + n + "  x: " + node.position.x + "  y: " + node.position.y);
-        console.log(node);
+        console.log("[NEW] " + tab_level[level] + "Container:" + n +
+            "  x: " + node.position.x + "  y: " + node.position.y + "  " + node._text);
+        console.log(parent.children);
         return node;
     }
 
     deserialize_ProtectedNode(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_ProtectedNode: " + parent._name + "  L:" + parent._level);
         let node = new PIXI.Container();
+        node._text = "PrNodeContainer" + (i_Container++);
         this.m_in[n] = node;
         node._level = parent._level + 1;
-        if (parent._level >= 0) {
-            parent.addChild(node);
-        }
-        console.log("[D] " + tab_level[level] + "deserialize_ProtectedNode");
         node.position.x = -200 + this.read_float();
         node.position.y = 20 + _h - this.read_float();
         node.position.x = 0;
@@ -284,10 +277,12 @@ const Serializer = class {
     }
 
     deserialize_scene(parent, n, level) {
-        console.log("[D] " + tab_level[level] + "deserialize_scene");
+        console.log("[D] " + tab_level[level] + "deserialize_scene: " + parent._name + "  L:" + parent._level);
         let scene = new PIXI.Container();
+        scene._text = "SceneContainer" + (i_Container++);
+        scene._level = level + 1;
+        scene._name = "scene" + n;
         let node = this.deserialize_node(scene, n, level);
-        scene._name = "scene";
         this.read_int64();
         scene._defaultCamera = this.readNode("defaultCamera", node, level + 1);
         scene._cameraOrderDirty = this.read_bool();
@@ -298,7 +293,9 @@ const Serializer = class {
     }
 
     deserialize_sprite(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_sprite: " + parent._name + "  L:" + parent._level);
         let tmp = new PIXI.Container();
+        tmp._text = "SpriteContainer" + (i_Container++);
         tmp._level = parent._level + 1;
         tmp._name = "tmp parent";
         let node = this.deserialize_node(tmp, 12357, level);
@@ -325,7 +322,9 @@ const Serializer = class {
     }
 
     deserialize_label(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_label: " + parent._name + "  L:" + parent._level);
         let tmp = new PIXI.Container();
+        tmp._text = "LabelContainer" + (i_Container++);
         tmp._level = parent._level + 1;
         tmp._name = "tmp parent";
         let node = this.deserialize_node(tmp, 12357, level);
@@ -346,11 +345,12 @@ const Serializer = class {
         text.anchor.y = 0.5;
         text.shadowColor = 0x0;
         text.align = 'left';
-        console.log("[Label] " + tab_level[level] + "x:" + text.position.x + " y:" + text.position.y + " " + mes);
+        console.log("[Lbl] " + tab_level[level] + "x:" + text.position.x + " y:" + text.position.y + " " + mes);
         return text;
     }
 
     deserialize_Button(parent, n, level) {
+        console.log("[D] " + tab_level[level] + "deserialize_Button: " + parent._name + "  L:" + parent._level);
         let x = this.read_float();
         let y = _h - this.read_float();
         let w = this.read_float();
@@ -369,6 +369,7 @@ const Serializer = class {
         text.position.set(x, y);
         text.anchor.set(0.5, 0.5);
         let node = new PIXI.Container();
+        node._text = "ButtonContainer" + (i_Container++);
         node.position.set(0, 0);
         node.width = w;
         node.height = h;
@@ -470,6 +471,7 @@ const Serializer = class {
         text2.alpha = 0.5;
         text2._name = "TEST";
         let c1 = new PIXI.Container();
+        c1._text = "Check2Container" + (i_Container++);
         c1.addChild(text2);
         c1.visible = false;
         // c1.position.set(_w / 2, _h / 2);
@@ -498,6 +500,7 @@ const Serializer = class {
         time._name = "server time";
         stage.addChild(time);
         ask(time);
+        i_Container = 0;
         stage._name = "main_scene";
         this.readNode("main_scene", stage, 1);
         this.readActionManager(stage, 1);
