@@ -498,18 +498,18 @@ const Serializer = class {
     deserialize_Text(parent, n, level) {
         console.log("[D] " + tab_level[level] + "deserialize_Text: " + parent._name + "  L:" + parent._level);
         let visible = this.read_bool();
-        // let x = this.read_float();
-        // let y = _h - this.read_float();
+        let x = this.read_float();
+        let y = _h - this.read_float();
         // let w = this.read_float();
         // let h = this.read_float();
-        // let mes = this.read_string();
-        // let font = this.read_string();
-        // let s = this.read_float();
-        // let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
-        // text.position.set(x, y);
-        let text = new PIXI.Container();
+        let mes = this.read_string();
+        let font = this.read_string();
+        let s = this.read_float();
+        let text = new PIXI.Text(mes, {fill: 0xffffff, align: 'center', font: font, fontSize: s});
+        text.position.set(x, y);
+        // let text = new PIXI.Container();
         text.visible = visible;
-        // text.anchor.set(0.5, 0.5);
+        text.anchor.set(0.5, 0.5);
         text._name = "Text" + n;
         text._type = "text";
         return text;
